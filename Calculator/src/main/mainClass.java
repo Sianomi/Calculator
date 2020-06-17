@@ -3,7 +3,8 @@ package main;
 import java.util.Scanner;
 //import java.io.File;
 
-public class mainClass {
+public class mainClass 
+{
 	
 	Scanner sc = new Scanner(System.in);
 	String value;
@@ -14,15 +15,20 @@ public class mainClass {
 		value = sc.nextLine();
 	}
 	
-	public static void main(String[] args) {
+	void output(String text)
+	{
+		System.out.println(text);
+	}
+	
+	public static void main(String[] args) 
+	{
 		mainClass mainObject = new mainClass();
 		while(true)
 		{
 			mainObject.input();
 			if(mainObject.value.equalsIgnoreCase("0")) break;
 			
-			System.out.println(mainObject.value);
+			mainObject.output(mainObject.value);
 		}
 	}
-
 }
