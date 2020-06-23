@@ -1,11 +1,13 @@
 package GUI;
 
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.ButtonGroup;
 import javax.swing.BoxLayout;
 import java.awt.Font;
@@ -17,6 +19,8 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import postfix.*;
+
 
 public class Layout {
 
@@ -54,7 +58,7 @@ public class Layout {
 	private JButton btnPlus;
 	private JPanel Operations;
 	private JButton btnAlgorithm;
-
+	private History dialog;
 	/**
 	 * Launch the application.
 	 */
@@ -83,6 +87,7 @@ public class Layout {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("\uACF5\uD559\uC6A9\uACC4\uC0B0\uAE30");
 		frame.getContentPane().setBackground(new Color(0, 0, 0));
 		frame.setBounds(100, 100, 679, 508);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -181,6 +186,7 @@ public class Layout {
 		keypad.add(btn0);
 		
 		btnEnter = new JButton("=");
+		btnEnter.addActionListener(new EventHandlerEnter());
 		btnEnter.setBackground(new Color(0, 0, 51));
 		btnEnter.setForeground(new Color(255, 255, 255));
 		btnEnter.setFont(new Font("±¼¸²", Font.PLAIN, 25));
@@ -252,6 +258,13 @@ public class Layout {
 		Feature.add(btnSqrt);
 		
 		btnHistory = new JButton("HISTORY");
+		btnHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dialog = new History();
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
+			}
+		});
 		btnHistory.setForeground(new Color(255, 255, 255));
 		btnHistory.setBackground(new Color(102, 102, 102));
 		Feature.add(btnHistory);
@@ -344,6 +357,20 @@ public class Layout {
 			tempString.deleteCharAt(tempCaret);
 			Text.setText(tempString.toString());
 			Text.setCaretPosition(tempCaret);
+        }
+ 
+    }
+    class EventHandlerEnter implements ActionListener {
+     	 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        	String text = Text.getText();
+        	String result;
+        	if(text.length()<=0) 
+        		return;
+        	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
+        	result = postfix.convToExpression(text);
+        	Text.setText(result);
         }
  
     }

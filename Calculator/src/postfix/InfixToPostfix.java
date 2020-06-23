@@ -1,7 +1,7 @@
-package test;
+package postfix;
 import java.util.Scanner;
 import java.util.Stack;
-
+/*
 public class InfixToPostfixMain {
 
 	public static void main(String[] args) {
@@ -19,10 +19,10 @@ public class InfixToPostfixMain {
 	}
 
 }
+*/
 
 
-
-class InfixToPostfix {
+public class InfixToPostfix {
 	// 중위연산자를 후위연산자로 변경
 	public String convToExpression(String exp) {
 
