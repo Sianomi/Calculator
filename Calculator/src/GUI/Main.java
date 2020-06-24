@@ -19,10 +19,13 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.*;
+
 import postfix.*;
+import Calculation.*;
 
 
-public class Layout {
+public class Main {
 
 	private JFrame frame;
 	private JTextField Text;
@@ -66,7 +69,7 @@ public class Layout {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Layout window = new Layout();
+					Main window = new Main();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,7 +81,7 @@ public class Layout {
 	/**
 	 * Create the application.
 	 */
-	public Layout() {
+	public Main() {
 		initialize();
 	}
 
@@ -365,12 +368,27 @@ public class Layout {
         @Override
         public void actionPerformed(ActionEvent e) {
         	String text = Text.getText();
-        	String result;
         	if(text.length()<=0) 
         		return;
+        	
         	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
-        	result = postfix.convToExpression(text);
-        	Text.setText(result);
+        	
+        	List<String> textPitches = new ArrayList<>(Arrays.asList((postfix.convToExpression(text)).split(" ")));
+        	Stack<Double> doubleStack = new Stack<Double>();
+        	
+        	for(String temp : textPitches)
+        	{
+        		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
+        		{
+        			double x = doubleStack.pop();
+        			double y = doubleStack.pop();
+        			doubleStack.push(Calculation.arithmetic.arithmeticCal(
+        					x, y , temp.charAt(0)));
+        			continue;
+        		}
+    			doubleStack.push(Double.parseDouble(temp));
+        	}
+        	Text.setText(doubleStack.get(0).toString());
         }
  
     }

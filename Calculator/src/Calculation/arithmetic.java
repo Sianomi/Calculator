@@ -2,7 +2,7 @@ package Calculation;
 
 public class arithmetic {
 	
-	static double arithmeticCal(double x, double y, char op ) {
+	public static double arithmeticCal(double x, double y, char op ) {
 		
 		double result=0;
 		
@@ -25,5 +25,10 @@ public class arithmetic {
 		return result;
 	}
 	
-	
+	public static boolean isArithmetic(char op)
+	{
+		if(op == '+' || op == '-' || op == '*' || op == '-')
+			return true;
+		return false;	
+	}
 }
