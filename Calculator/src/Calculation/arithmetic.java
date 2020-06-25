@@ -27,7 +27,7 @@ public class arithmetic {
 	
 	public static boolean isArithmetic(char op)
 	{
-		if(op == '+' || op == '-' || op == '*' || op == '-')
+		if(op == '+' || op == '-' || op == '*' || op == '/')
 			return true;
 		return false;	
 	}

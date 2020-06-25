@@ -326,10 +326,10 @@ public class Main {
         	JButton btn = (JButton) e.getSource();
         	StringBuffer tempString = new StringBuffer(Text.getText());
         	int tempCaret = Text.getCaretPosition();
-        	String tempStringBtn = btn.getText()+"(";
+        	String tempStringBtn = btn.getText()+"()";
         	tempString.insert(tempCaret,tempStringBtn);
 			Text.setText(tempString.toString());
-			Text.setCaretPosition(tempCaret+tempStringBtn.length());
+			Text.setCaretPosition(tempCaret+tempStringBtn.length()-1);
         }
  
     }
