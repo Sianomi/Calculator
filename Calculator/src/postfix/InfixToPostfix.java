@@ -1,5 +1,4 @@
 package postfix;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class InfixToPostfix {
@@ -7,10 +6,11 @@ public class InfixToPostfix {
 	public Stack<String> convToExpression(String exp) {
 
 		Stack<Character> stack = new Stack<>();
-		int len = exp.length();
-		exp += '\0';
 		Stack<String> postFix = new Stack<String>();
 		StringBuilder temp = new StringBuilder();
+
+		int len = exp.length();
+		exp = exp.toLowerCase()+'\0';
 
 		for (int i = 0; i < len; i++) {
 
@@ -29,8 +29,12 @@ public class InfixToPostfix {
 			{
 				int index = exp.indexOf(')',i)+1;
 				String logtri = exp.substring(i,index);
-				i = index;
-				System.out.println(logtri+" °ËÃâ");
+				i = index-1;
+				
+				index = logtri.indexOf('(');
+				String logtriOp = logtri.substring(0,index);
+				logtri = logtri.substring(index+1,logtri.indexOf(')',index));
+				System.out.println(logtriOp + " " + logtri);
 			}
 			else
 			{
@@ -108,11 +112,9 @@ public class InfixToPostfix {
 	}
     private boolean isLogTri(String text, int index)
     {
-    	if( text.indexOf("Sin",index)==index || text.indexOf("Cos",index)==index || text.indexOf("Tan",index)==index || 
-    			text.indexOf("sin",index)==index || text.indexOf("cos",index)==index || text.indexOf("Tan",index)==index)
+    	if(text.indexOf("sin",index)==index || text.indexOf("cos",index)==index || text.indexOf("tan",index)==index)
     		return true;
-    	else if(text.indexOf("Log10",index)==index || text.indexOf("Log_e",index)==index || text.indexOf("Pow",index)==index || text.indexOf("Sqrt",index)==index || 
-    			text.indexOf("log10",index)==index || text.indexOf("log_e",index)==index || text.indexOf("pow",index)==index || text.indexOf("sqrt",index)==index)
+    	else if(text.indexOf("log10",index)==index || text.indexOf("log_e",index)==index || text.indexOf("pow",index)==index || text.indexOf("sqrt",index)==index)
     		return true;
 		return false;
     }
