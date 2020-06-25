@@ -380,8 +380,10 @@ public class Main {
         	{
         		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
         		{
+        			double second = doubleStack.pop();
+        			double first = doubleStack.pop();
         			doubleStack.push(Calculation.arithmetic.arithmeticCal(
-        					doubleStack.pop(), doubleStack.pop() , temp.charAt(0)));
+        					first, second , temp.charAt(0)));
         			continue;
         		}
     			doubleStack.push(Double.parseDouble(temp));
