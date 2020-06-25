@@ -1,35 +1,16 @@
 package postfix;
 import java.util.Scanner;
 import java.util.Stack;
-/*
-public class InfixToPostfixMain {
-
-	public static void main(String[] args) {
-
-		InfixToPostfix conv = new InfixToPostfix();
-		Scanner sc = new Scanner(System.in);
-		String str;
-		while (true)
-		{
-			str = sc.nextLine();
-			if (str.equalsIgnoreCase("exit")) break;
-			System.out.println(conv.convToExpression(str));
-		}
-		sc.close();
-	}
-
-}
-*/
-
 
 public class InfixToPostfix {
 	// 중위연산자를 후위연산자로 변경
-	public String convToExpression(String exp) {
+	public Stack<String> convToExpression(String exp) {
 
 		Stack<Character> stack = new Stack<>();
 		int len = exp.length();
 		exp += '\0';
-		String postFix = "";
+		Stack<String> postFix = new Stack<String>();
+		StringBuilder temp = new StringBuilder();
 
 		for (int i = 0; i < len; i++) {
 
@@ -37,10 +18,11 @@ public class InfixToPostfix {
 			if ((ch >= '0' && ch <= '9') || ch == '.') 
 			{
 
-				postFix += ch;
+				temp.append(ch);
 				if((getOpPrec(exp.charAt(i+1))>0) || exp.charAt(i+1) == '\0' || exp.charAt(i+1) == ' ')
 				{ 
-					postFix += ' '; 
+					postFix.push(temp.toString());
+					temp.setLength(0);
 				}
 			}
 			else if (isLogTri(exp, i))
@@ -64,8 +46,7 @@ public class InfixToPostfix {
 						char pop = stack.pop();
 						if (pop == '(')
 							break;
-						postFix += pop;
-						postFix += ' ';
+						postFix.push(String.valueOf(pop));
 					}
 					break;
 
@@ -75,8 +56,7 @@ public class InfixToPostfix {
 				case '/':
 					while (!stack.isEmpty() && isProceed(stack.peek(), ch))
 					{
-						postFix += stack.pop();
-						postFix += ' ';
+						postFix.push(String.valueOf(stack.pop()));
 					}
 						
 					stack.push(ch);
@@ -88,8 +68,7 @@ public class InfixToPostfix {
 
 		while (!stack.isEmpty())
 		{
-			postFix += stack.pop();
-			postFix += ' ';
+			postFix.push(String.valueOf(stack.pop()));
 		}
 			
 

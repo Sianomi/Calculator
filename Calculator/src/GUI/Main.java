@@ -373,7 +373,8 @@ public class Main {
         	
         	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
         	
-        	List<String> textPitches = new ArrayList<>(Arrays.asList((postfix.convToExpression(text)).split(" ")));
+        	//List<String> textPitches = new ArrayList<>(Arrays.asList((postfix.convToExpression(text)).split(" ")));
+        	Stack<String> textPitches = postfix.convToExpression(text);
         	Stack<Double> doubleStack = new Stack<Double>();
         	
         	for(String temp : textPitches)
