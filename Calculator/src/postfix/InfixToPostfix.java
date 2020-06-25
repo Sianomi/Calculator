@@ -27,9 +27,9 @@ public class InfixToPostfix {
 			}
 			else if (isLogTri(exp, i))
 			{
-				int index = exp.indexOf(')',i)+1;
-				String logtri = exp.substring(i,index);
-				i = index-1;
+				int index = exp.indexOf(')',i);
+				String logtri = exp.substring(i,index+1);
+				i = index;
 				
 				index = logtri.indexOf('(');
 				String logtriOp = logtri.substring(0,index);
