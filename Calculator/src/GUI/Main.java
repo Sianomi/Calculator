@@ -391,29 +391,6 @@ public class Main {
         }
  
     }
-    /*
-    class EventHandlerEnterKeyboard implements KeyListener {
-  
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode()==10)
-				Calculation();
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
- 
-    }
-    */
 
     private void Calculation()
     {
@@ -423,7 +400,6 @@ public class Main {
     	
     	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
     	
-    	//List<String> textPitches = new ArrayList<>(Arrays.asList((postfix.convToExpression(text)).split(" ")));
     	Stack<String> textPitches = postfix.convToExpression(text);
     	Stack<Double> doubleStack = new Stack<Double>();
     	
