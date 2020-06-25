@@ -1,25 +1,23 @@
 package LogTri;
 
 public class trigonometrical {
-	public static double Calculation (double x, String op)
+	public double Calculation (double x, String op)
 	{	
-		double result;
+		double result = 0.0;
 		if(op.equalsIgnoreCase("sin"))
 		{   
-			Math.toDegrees(x);
-			result = Math.sin(x);
+			result = Math.sin(Math.toRadians(x));
 		}
 		else if(op.equalsIgnoreCase("cos"))
 		{
-			Math.toDegrees(x);
-			result = Math.cos(x);
+			
+			result = Math.cos(Math.toRadians(x));
 		}
 		
 		else if(op.equalsIgnoreCase("tan"))
 
 		{
-			Math.toDegrees(x);
-			result = Math.tan(x);
+			result = Math.tan(Math.toRadians(x));
 		}
 		
 		else if(op.equalsIgnoreCase("log10"))
@@ -34,5 +32,13 @@ public class trigonometrical {
 				
 		return result;
 	}
+    public boolean isLogTri(String text, int index)
+    {
+    	if(text.indexOf("sin",index)==index || text.indexOf("cos",index)==index || text.indexOf("tan",index)==index)
+    		return true;
+    	else if(text.indexOf("log10",index)==index || text.indexOf("log_e",index)==index || text.indexOf("pow",index)==index || text.indexOf("sqrt",index)==index)
+    		return true;
+		return false;
+    }
 }
 	

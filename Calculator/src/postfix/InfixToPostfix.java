@@ -1,5 +1,6 @@
 package postfix;
 import java.util.Stack;
+import LogTri.*;
 
 public class InfixToPostfix {
 	// 중위연산자를 후위연산자로 변경
@@ -7,7 +8,9 @@ public class InfixToPostfix {
 
 		Stack<Character> stack = new Stack<>();
 		Stack<String> postFix = new Stack<String>();
+		Stack<String> postFixTemp = new Stack<String>();
 		StringBuilder temp = new StringBuilder();
+		LogTri.trigonometrical logTri = new LogTri.trigonometrical();
 
 		int len = exp.length();
 		exp = exp.toLowerCase()+'\0';
@@ -25,7 +28,7 @@ public class InfixToPostfix {
 					temp.setLength(0);
 				}
 			}
-			else if (isLogTri(exp, i))
+			else if (logTri.isLogTri(exp, i))
 			{
 				int index = exp.indexOf(')',i);
 				String logtri = exp.substring(i,index+1);
@@ -34,7 +37,10 @@ public class InfixToPostfix {
 				index = logtri.indexOf('(');
 				String logtriOp = logtri.substring(0,index);
 				logtri = logtri.substring(index+1,logtri.indexOf(')',index));
-				System.out.println(logtriOp + " " + logtri);
+				postFixTemp = convToExpression(logtri);
+				double one = calPostfix(postFixTemp);
+				double two = logTri.Calculation(one, logtriOp);
+				postFix.push(Double.toString(two));
 			}
 			else
 			{
@@ -110,12 +116,27 @@ public class InfixToPostfix {
 		else
 			return false;
 	}
-    private boolean isLogTri(String text, int index)
-    {
-    	if(text.indexOf("sin",index)==index || text.indexOf("cos",index)==index || text.indexOf("tan",index)==index)
-    		return true;
-    	else if(text.indexOf("log10",index)==index || text.indexOf("log_e",index)==index || text.indexOf("pow",index)==index || text.indexOf("sqrt",index)==index)
-    		return true;
-		return false;
-    }
+	
+	public double calPostfix(Stack<String> textPitches)
+	{
+		Stack<Double> doubleStack = new Stack<Double>();
+		if(textPitches.size()>1)
+		{
+			for(String temp : textPitches)
+	    	{
+	    		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
+	    		{
+	    			double second = doubleStack.pop();
+	    			double first = doubleStack.pop();
+	    			doubleStack.push(Calculation.arithmetic.arithmeticCal(
+	    					first, second , temp.charAt(0)));
+	    			continue;
+	    		}
+				doubleStack.push(Double.parseDouble(temp));
+	    	}
+		}
+		else
+			doubleStack.push(Double.parseDouble(textPitches.get(0)));
+		return doubleStack.get(0);
+	}
 }

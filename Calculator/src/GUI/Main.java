@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
+
 public class Main {
 
 	private JFrame frame;
@@ -397,24 +398,7 @@ public class Main {
 		String text = Text.getText();
     	if(text.length()<=0) 
     		return;
-    	
-    	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
-    	
-    	Stack<String> textPitches = postfix.convToExpression(text);
-    	Stack<Double> doubleStack = new Stack<Double>();
-    	
-    	for(String temp : textPitches)
-    	{
-    		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
-    		{
-    			double second = doubleStack.pop();
-    			double first = doubleStack.pop();
-    			doubleStack.push(Calculation.arithmetic.arithmeticCal(
-    					first, second , temp.charAt(0)));
-    			continue;
-    		}
-			doubleStack.push(Double.parseDouble(temp));
-    	}
-    	Text.setText(doubleStack.get(0).toString());
+    	postfix.InfixToPostfix temp = new postfix.InfixToPostfix();
+    	Text.setText(String.format("%.10f", temp.calPostfix(temp.convToExpression(text))));
     }
 }
