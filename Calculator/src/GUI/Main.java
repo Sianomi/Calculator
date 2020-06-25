@@ -6,9 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.ButtonGroup;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import java.awt.Font;
 import javax.swing.JPanel;
@@ -23,6 +27,9 @@ import java.util.*;
 
 import postfix.*;
 import Calculation.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 public class Main {
@@ -62,6 +69,8 @@ public class Main {
 	private JPanel Operations;
 	private JButton btnAlgorithm;
 	private History dialog;
+	private static final String CALCULATE = "calculate";
+	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
 	/**
 	 * Launch the application.
 	 */
@@ -90,6 +99,17 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		
+		AbstractAction actionListener = new AbstractAction() {
+		      public void actionPerformed(ActionEvent actionEvent) {
+		    	  Calculation();
+		      }
+		    };
+		
+		JPanel content = (JPanel) frame.getContentPane();
+		content.getInputMap(IFW).put(KeyStroke.getKeyStroke("ENTER"), CALCULATE);
+		content.getActionMap().put(CALCULATE, actionListener);
+		
 		frame.setTitle("\uACF5\uD559\uC6A9\uACC4\uC0B0\uAE30");
 		frame.getContentPane().setBackground(new Color(0, 0, 0));
 		frame.setBounds(100, 100, 679, 508);
@@ -189,7 +209,7 @@ public class Main {
 		keypad.add(btn0);
 		
 		btnEnter = new JButton("=");
-		btnEnter.addActionListener(new EventHandlerEnter());
+		btnEnter.addActionListener(new EventHandlerEnterMouse());
 		btnEnter.setBackground(new Color(0, 0, 51));
 		btnEnter.setForeground(new Color(255, 255, 255));
 		btnEnter.setFont(new Font("±¼¸²", Font.PLAIN, 25));
@@ -363,34 +383,38 @@ public class Main {
         }
  
     }
-    class EventHandlerEnter implements ActionListener {
+    class EventHandlerEnterMouse implements ActionListener {
      	 
         @Override
         public void actionPerformed(ActionEvent e) {
-        	String text = Text.getText();
-        	if(text.length()<=0) 
-        		return;
-        	
-        	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
-        	
-        	//List<String> textPitches = new ArrayList<>(Arrays.asList((postfix.convToExpression(text)).split(" ")));
-        	Stack<String> textPitches = postfix.convToExpression(text);
-        	Stack<Double> doubleStack = new Stack<Double>();
-        	
-        	for(String temp : textPitches)
-        	{
-        		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
-        		{
-        			double second = doubleStack.pop();
-        			double first = doubleStack.pop();
-        			doubleStack.push(Calculation.arithmetic.arithmeticCal(
-        					first, second , temp.charAt(0)));
-        			continue;
-        		}
-    			doubleStack.push(Double.parseDouble(temp));
-        	}
-        	Text.setText(doubleStack.get(0).toString());
+        	Calculation();
         }
  
+    }
+
+    private void Calculation()
+    {
+		String text = Text.getText();
+    	if(text.length()<=0) 
+    		return;
+    	
+    	postfix.InfixToPostfix postfix = new postfix.InfixToPostfix();
+    	
+    	Stack<String> textPitches = postfix.convToExpression(text);
+    	Stack<Double> doubleStack = new Stack<Double>();
+    	
+    	for(String temp : textPitches)
+    	{
+    		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
+    		{
+    			double second = doubleStack.pop();
+    			double first = doubleStack.pop();
+    			doubleStack.push(Calculation.arithmetic.arithmeticCal(
+    					first, second , temp.charAt(0)));
+    			continue;
+    		}
+			doubleStack.push(Double.parseDouble(temp));
+    	}
+    	Text.setText(doubleStack.get(0).toString());
     }
 }
