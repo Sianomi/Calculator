@@ -17,7 +17,7 @@ public class trigonometrical {
 		else if(op.equalsIgnoreCase("tan"))
 
 		{
-			if((int)x % 90 == 0 && (int)x != 0 && (int)x % 180 != 0)
+			if(x % 90 == 0 && x != 0 && x % 180 != 0)
 				result = Double.NaN;
 			else
 			{
