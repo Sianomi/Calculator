@@ -5,31 +5,22 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.SystemColor;
 
 public class History extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			History dialog = new History();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.
@@ -48,14 +39,12 @@ public class History extends JDialog {
 			btnGetHistory.setForeground(Color.WHITE);
 			btnGetHistory.setBackground(new Color(0, 0, 51));
 			btnGetHistory.setFont(new Font("굴림", Font.PLAIN, 25));
-			btnGetHistory.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
+			btnGetHistory.addActionListener(new EventHandlerRemove());
 			contentPanel.add(btnGetHistory);
 		}
 		{
 			JButton btnRemoveHistory = new JButton("\uAE30\uB85D\uC0AD\uC81C");
+			btnRemoveHistory.addActionListener(new EventHandlerRemove());
 			btnRemoveHistory.setForeground(Color.WHITE);
 			btnRemoveHistory.setBackground(new Color(0, 0, 51));
 			btnRemoveHistory.setFont(new Font("굴림", Font.PLAIN, 25));
@@ -79,5 +68,29 @@ public class History extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	class EventHandlerRemove implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			 UIManager um=new UIManager();
+			 um.put("OptionPane.background",Color.BLACK);
+			 um.put("Panel.background",Color.BLACK);
+			 um.put("OptionPane.messageForeground", Color.WHITE);
+			 um.put("Panel.messageForeground", Color.WHITE);
+			 um.put("Button.background", Color.ORANGE);
+			 
+			 String []yesNo = {"예", "아니오"};
+			 int check = JOptionPane.showOptionDialog(null, "기록을 모두 삭제하시겠습니까?", "기록삭제확인", 
+					 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE ,null,yesNo,yesNo[0]);
+			 
+			 if(check==0)
+			 {
+				 JOptionPane.showMessageDialog(null, "삭제했습니다.", "완료알림", JOptionPane.CLOSED_OPTION);
+			 }
+		}
+		
 	}
 }
