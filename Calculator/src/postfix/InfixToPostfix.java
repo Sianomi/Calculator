@@ -124,7 +124,7 @@ public class InfixToPostfix {
 		{
 			for(String temp : textPitches)
 	    	{
-	    		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)))
+	    		if(Calculation.arithmetic.isArithmetic(temp.charAt(0)) && temp.length()==1)
 	    		{
 	    			double second = doubleStack.pop();
 	    			double first = doubleStack.pop();

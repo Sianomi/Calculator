@@ -17,7 +17,13 @@ public class trigonometrical {
 		else if(op.equalsIgnoreCase("tan"))
 
 		{
-			result = Math.tan(Math.toRadians(x));
+			if((int)x % 90 == 0 && (int)x != 0 && (int)x % 180 != 0)
+				result = Double.NaN;
+			else
+			{
+				x %= 90;
+				result = Math.tan(Math.toRadians(x));
+			}
 		}
 		
 		else if(op.equalsIgnoreCase("log10"))
