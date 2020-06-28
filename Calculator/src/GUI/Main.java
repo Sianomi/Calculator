@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.*;
 
 import postfix.*;
@@ -34,6 +35,7 @@ import Calculation.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import History.History;
 
 
 
@@ -73,7 +75,7 @@ public class Main {
 	private JButton btnPlus;
 	private JPanel Operations;
 	private JButton btnAlgorithm;
-	private History dialog;
+	private HistoryGUI dialog;
 	private static final String CALCULATE = "calculate";
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
 	/**
@@ -289,7 +291,7 @@ public class Main {
 		btnHistory = new JButton("HISTORY");
 		btnHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dialog = new History();
+				dialog = new HistoryGUI();
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}
@@ -472,9 +474,19 @@ public class Main {
     private void Calculation()
     {
 		String text = Text.getText();
+		String result;
     	if(text.length()<=0) 
     		return;
+    	
     	postfix.InfixToPostfix temp = new postfix.InfixToPostfix();
-    	Text.setText(String.format("%.10f", temp.calPostfix(temp.convToExpression(text))));
+    	result = String.format("%.10f", temp.calPostfix(temp.convToExpression(text)));
+    	
+    	History file = new History();
+    	try {
+			file.Write(text + " = " + result);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+    	Text.setText(result);
     }
 }

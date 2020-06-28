@@ -13,21 +13,23 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.SystemColor;
+import History.History;
 
-public class History extends JDialog {
+public class HistoryGUI extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Create the dialog.
 	 */
-	public History() {
+	public HistoryGUI() {
 		UIManager.put("OptionPane.background",Color.BLACK);
 		UIManager.put("Panel.background",Color.BLACK);
 		UIManager.put("OptionPane.messageForeground", Color.WHITE);
@@ -82,10 +84,17 @@ public class History extends JDialog {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			History file = new History();
 			JDialog view = new JDialog();
-			String []str = {"abc","def"};
+			String[] str = null;
+			try {
+				str = file.Read().toArray(new String[0]);
+			} catch (IOException e1) {
+				System.out.println(e1);
+				return;
+			}
 			JList<String> listView = new JList<String>(str);
-			view.add(new JScrollPane(listView),"Center");
+			view.getContentPane().add(new JScrollPane(listView),"Center");
 			listView.setBackground(Color.BLACK);
 			listView.setForeground(Color.WHITE);
 			view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -101,12 +110,19 @@ public class History extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			 String []yesNo = {"예", "아니오"};
+			 History file = new History();
 			 int check = JOptionPane.showOptionDialog(null, "기록을 모두 삭제하시겠습니까?", "기록삭제확인", 
 					 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE ,null,yesNo,yesNo[0]);
 			 
 			 if(check==0)
 			 {
-				 JOptionPane.showMessageDialog(null, "삭제했습니다.", "완료알림", JOptionPane.CLOSED_OPTION);
+				try {
+					file.Reset();
+				} catch (IOException e1) {
+					System.out.println(e1);
+					return;
+				}
+				JOptionPane.showMessageDialog(null, "삭제했습니다.", "완료알림", JOptionPane.CLOSED_OPTION);
 			 }
 		}
 		

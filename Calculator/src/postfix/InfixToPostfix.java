@@ -92,7 +92,10 @@ public class InfixToPostfix {
 
 		while (!stack.isEmpty())
 		{
-			postFix.push(String.valueOf(stack.pop()));
+			char op = stack.pop();
+			if(op == '(')
+				continue;
+			postFix.push(String.valueOf(op));
 		}
 			
 
