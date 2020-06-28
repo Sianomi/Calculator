@@ -1,6 +1,7 @@
 package postfix;
 import java.util.Stack;
 import LogTri.*;
+import algo.Algorithm;
 
 public class InfixToPostfix {
 	// 중위연산자를 후위연산자로 변경
@@ -28,7 +29,7 @@ public class InfixToPostfix {
 					temp.setLength(0);
 				}
 			}
-			else if (logTri.isLogTri(exp, i))
+			else if (logTri.isLogTri(exp, i) || algo.Algorithm.isAlgorithm(exp,i))
 			{
 				int index = exp.indexOf(')',i);
 				String logtri = exp.substring(i,index+1);
@@ -37,10 +38,23 @@ public class InfixToPostfix {
 				index = logtri.indexOf('(');
 				String logtriOp = logtri.substring(0,index);
 				logtri = logtri.substring(index+1,logtri.indexOf(')',index));
-				postFixTemp = convToExpression(logtri);
-				double one = calPostfix(postFixTemp);
-				double two = logTri.Calculation(one, logtriOp);
-				postFix.push(Double.toString(two));
+				if(algo.Algorithm.isAlgorithm(exp, 0))
+				{
+					index = logtri.indexOf(',');
+					postFix.push(Double.toString(algo.Algorithm.runAlgorithm(Double.parseDouble(logtri.substring(0, index)),
+							Double.parseDouble(logtri.substring(index+1)), logtriOp)));
+				}
+				else if(logtriOp.equals("pow"))
+				{
+					index = logtri.indexOf(',');
+					postFix.push(Double.toString(logTri.Calculation(Double.parseDouble(logtri.substring(0, index)),
+							Double.parseDouble(logtri.substring(index+1)), logtriOp)));
+				}
+				else
+				{
+					postFixTemp = convToExpression(logtri);
+					postFix.push(Double.toString(logTri.Calculation(calPostfix(postFixTemp), logtriOp)));
+				}
 			}
 			else
 			{
@@ -119,6 +133,8 @@ public class InfixToPostfix {
 	
 	public double calPostfix(Stack<String> textPitches)
 	{
+		if(textPitches.empty())
+			return 0;
 		Stack<Double> doubleStack = new Stack<Double>();
 		if(textPitches.size()>1)
 		{

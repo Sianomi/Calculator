@@ -16,13 +16,17 @@ import javax.swing.Action;
 import javax.swing.BoxLayout;
 import java.awt.Font;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 
 import postfix.*;
@@ -253,6 +257,7 @@ public class Main {
 		Feature.add(btnLog_e);
 		
 		btnAlgorithm = new JButton("Algorithm");
+		btnAlgorithm.addActionListener(new EventHandlerAlgorithm());
 		btnAlgorithm.setForeground(new Color(255, 255, 255));
 		btnAlgorithm.setBackground(new Color(102, 102, 102));
 		Feature.add(btnAlgorithm);
@@ -347,8 +352,18 @@ public class Main {
         	JButton btn = (JButton) e.getSource();
         	StringBuffer tempString = new StringBuffer(Text.getText());
         	int tempCaret = Text.getCaretPosition();
-        	String tempStringBtn = btn.getText()+"()";
-        	tempString.insert(tempCaret,tempStringBtn);
+        	String tempStringBtn = btn.getText();
+        	if(btn.getText().equalsIgnoreCase("pow"))
+        	{
+        		tempStringBtn += "(,)";
+        		tempString.insert(tempCaret,tempStringBtn);
+        		tempCaret -= 1;
+        	}
+        	else
+        	{
+        		tempStringBtn += "()";
+        		tempString.insert(tempCaret,tempStringBtn);
+        	}
 			Text.setText(tempString.toString());
 			Text.setCaretPosition(tempCaret+tempStringBtn.length()-1);
         }
@@ -391,6 +406,67 @@ public class Main {
         	Calculation();
         }
  
+    }
+    
+    class EventHandlerAlgorithm implements ActionListener {
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    		JDialog view = new JDialog();
+			JList<String> listView = new JList<String>(algo.Algorithm.getAlgorithmList());
+			view.getContentPane().add(new JScrollPane(listView),"Center");
+			listView.setBackground(Color.BLACK);
+			listView.setForeground(Color.WHITE);
+			view.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			view.setTitle("알고리즘 목록");
+			view.setSize(400,300);
+			view.setVisible(true);
+			listView.addMouseListener(new EventHandlerAlgorithmList());
+    	}
+    }
+    
+    class EventHandlerAlgorithmList implements MouseListener
+    {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 1) {
+                JList target = (JList)e.getSource();
+                int index = target.locationToIndex(e.getPoint());
+                if (index >= 0) {
+	                String item = (String)target.getModel().getElementAt(index);
+	               	StringBuffer tempString = new StringBuffer(Text.getText());
+	            	int tempCaret = Text.getCaretPosition();
+            		item += "(,)";
+            		tempString.insert(tempCaret,item);
+	    			Text.setText(tempString.toString());
+	    			Text.setCaretPosition(tempCaret+item.length()-2);
+                }
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
     }
 
     private void Calculation()

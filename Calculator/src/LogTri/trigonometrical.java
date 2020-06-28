@@ -33,9 +33,18 @@ public class trigonometrical {
 		
 		else if(op.equalsIgnoreCase("log_e"))
 		{
-			result = Math.exp(x);
+			result = Math.log(x);
 		}
-				
+		else if(op.equalsIgnoreCase("sqrt"))
+		{
+			result = Math.sqrt(x);
+		}
+		return result;
+	}
+	public double Calculation(double x, double y, String op)
+	{
+		double result = 0.0;
+		result = Math.pow(x, y);
 		return result;
 	}
     public boolean isLogTri(String text, int index)
