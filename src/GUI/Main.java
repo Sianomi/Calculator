@@ -78,6 +78,7 @@ public class Main {
 	private HistoryGUI dialog;
 	private static final String CALCULATE = "calculate";
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+	private JDialog view;
 	/**
 	 * Launch the application.
 	 */
@@ -100,7 +101,7 @@ public class Main {
 	public Main() {
 		initialize();
 	}
-
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -291,7 +292,7 @@ public class Main {
 		btnHistory = new JButton("HISTORY");
 		btnHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dialog = new HistoryGUI();
+				dialog = new HistoryGUI(Text);
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}
@@ -413,7 +414,7 @@ public class Main {
     class EventHandlerAlgorithm implements ActionListener {
     	@Override
     	public void actionPerformed(ActionEvent e) {
-    		JDialog view = new JDialog();
+    		view = new JDialog();
 			JList<String> listView = new JList<String>(algo.Algorithm.getAlgorithmList());
 			view.getContentPane().add(new JScrollPane(listView),"Center");
 			listView.setBackground(Color.BLACK);
@@ -442,6 +443,7 @@ public class Main {
             		tempString.insert(tempCaret,item);
 	    			Text.setText(tempString.toString());
 	    			Text.setCaretPosition(tempCaret+item.length()-2);
+	    			view.dispose();
                 }
 			}
 		}

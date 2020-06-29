@@ -9,10 +9,13 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.event.ActionEvent;
@@ -25,16 +28,19 @@ import History.History;
 public class HistoryGUI extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private JTextField Text;
 
 	/**
 	 * Create the dialog.
 	 */
-	public HistoryGUI() {
+	public HistoryGUI(JTextField Text) {
 		UIManager.put("OptionPane.background",Color.BLACK);
 		UIManager.put("Panel.background",Color.BLACK);
 		UIManager.put("OptionPane.messageForeground", Color.WHITE);
 		UIManager.put("Panel.messageForeground", Color.WHITE);
 		UIManager.put("Button.background", Color.ORANGE);
+		
+		this.Text = Text;
 		
 		getContentPane().setBackground(Color.BLACK);
 		setTitle("\uAE30\uB85D\uAD00\uB9AC");
@@ -101,6 +107,7 @@ public class HistoryGUI extends JDialog {
 			view.setTitle("기록목록");
 			view.setSize(400,300);
 			view.setVisible(true);
+			listView.addMouseListener(new EventHandlerMouseClicked());
 		}
 	}
 	
@@ -124,6 +131,53 @@ public class HistoryGUI extends JDialog {
 				}
 				JOptionPane.showMessageDialog(null, "삭제했습니다.", "완료알림", JOptionPane.CLOSED_OPTION);
 			 }
+		}
+		
+	}
+	
+	class EventHandlerMouseClicked implements MouseListener
+	{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 1)
+			{
+				JList target = (JList)e.getSource();
+				int index = target.locationToIndex(e.getPoint());
+                if (index >= 0) {
+	                String item = (String)target.getModel().getElementAt(index);
+	                String expression = item.substring(0,item.indexOf('=')).trim();
+	                StringBuffer tempString = new StringBuffer(Text.getText());
+	                int tempCaret = Text.getCaretPosition();
+	                tempString.insert(tempCaret,expression);
+	    			Text.setText(tempString.toString());
+	    			Text.setCaretPosition(tempCaret+expression.length());
+                }
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}
